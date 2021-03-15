@@ -8,59 +8,47 @@ public class GameManager : MonoBehaviour
 {
     public string sceneName;
     public Text scoreText;
-    public Text currentText;
     public Text maxText;
 
     public player_move player;
 
-    private static GameManager instance;
+    public static GameManager instance;
+
     private float scoreTime;
     private float maxScoreTime;
 
-    private bool main = true;
-
-    public static GameManager getInstance() {
-        return instance;
-    }
-
     private void Awake() {
-        DontDestroyOnLoad(gameObject);
-        scoreTime = 0f;
+        instance = this;
+        //DontDestroyOnLoad(gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        if(instance != null) {
-            Debug.Log("instance is Duplicate");
-            instance = this;
-        } 
+        if(SceneManager.GetActiveScene().name == "gameOver") {
+            scoreText.text = "CURRENT SCORE : " + PlayerPrefs.GetFloat("current");
+            maxText.text = "MAX SCORE : " + PlayerPrefs.GetFloat("max");
+        }
 
-        Debug.Log(SceneManager.GetActiveScene().name);
-        Debug.Log(main);
+        if(PlayerPrefs.GetFloat("max") != null) maxScoreTime = PlayerPrefs.GetFloat("max");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(SceneManager.GetActiveScene().name == "gameOver") {
-            main = false;
-        } else {
-            main = true;
-        }
-        
-        if(main) {
+        if(SceneManager.GetActiveScene().name != "gameOver") {
             scoreTime += Time.deltaTime;
-            scoreText.text = "SCORE : " + Mathf.Round(scoreTime * 10) * 0.01f;
+            scoreText.text = "SCORE : " + Mathf.Round(scoreTime * 100) * 0.01f;
+
+            if(maxScoreTime <= scoreTime) maxScoreTime = scoreTime;
 
             if(player.PlayerDead()) {
+                PlayerPrefs.SetFloat("current", Mathf.Round(scoreTime * 100) * 0.01f);
+                PlayerPrefs.SetFloat("max", Mathf.Round(maxScoreTime * 100) * 0.01f);
                 SceneManager.LoadScene(sceneName);
             }
-
-            if(maxScoreTime < scoreTime) maxScoreTime = scoreTime;
         } else {
-            currentText.text = "CURRENT SCORE : " + Mathf.Round(scoreTime * 10) * 0.01f;
-            maxText.text = "MAX SCORE : " + maxScoreTime;
+            if(Input.GetKeyDown("space")) SceneManager.LoadScene(sceneName);
         }
     }
 }
