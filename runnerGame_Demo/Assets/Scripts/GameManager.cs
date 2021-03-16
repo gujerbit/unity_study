@@ -26,22 +26,16 @@ public class GameManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "gameOver")
         {
-            scoreText.text = "CURRENT SCORE : " + PlayerPrefs.GetFloat("current");
-            maxScoreText.text = "MAX SCORE : " + PlayerPrefs.GetFloat("max");
+            scoreText.text = "CURRENT SCORE : " + Mathf.Round(PlayerPrefs.GetFloat("current") * 100) * 0.01f;
+            maxScoreText.text = "MAX SCORE : " + Mathf.Round(PlayerPrefs.GetFloat("max") * 100) * 0.01;
         }
+
+        maxScore = PlayerPrefs.GetFloat("max");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(player.DeadStatus())
-        {
-            if (PlayerPrefs.GetFloat("max") <= PlayerPrefs.GetFloat("current")) maxScore = currentScore;
-            PlayerPrefs.SetFloat("current", currentScore);
-            PlayerPrefs.SetFloat("max", maxScore);
-            SceneManager.LoadScene(sceneName);
-        }
-
         if(SceneManager.GetActiveScene().name == "gameOver")
         {
             if(Input.GetKeyDown("space"))
@@ -52,6 +46,14 @@ public class GameManager : MonoBehaviour
         {
             currentScore += Time.deltaTime;
             scoreText.text = "SCORE : " + Mathf.Round(currentScore * 100) * 0.01f;
+
+            if (player.DeadStatus())
+            { 
+                if (maxScore <= currentScore) maxScore = currentScore;
+                PlayerPrefs.SetFloat("current", currentScore);
+                PlayerPrefs.SetFloat("max", maxScore);
+                SceneManager.LoadScene(sceneName);
+            }
         }
     }
 }
