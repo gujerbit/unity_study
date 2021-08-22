@@ -7,6 +7,7 @@ public class enemy : MonoBehaviour
     private Rigidbody2D rigid;
     private GameManager manager; //매니저 객체
     private dino dino; //플레이어
+    private float speed = 10f;
 
     private void Awake()
     {
@@ -29,7 +30,8 @@ public class enemy : MonoBehaviour
             rigid.velocity = new Vector2(0, 0); //움직이지 않도록 설정
             return;
         }
-        rigid.velocity = new Vector2(-manager.speed, rigid.velocity.y); //계속 왼쪽으로 이동
+        //rigid.velocity = new Vector2(-manager.speed, rigid.velocity.y); //계속 왼쪽으로 이동
+        rigid.velocity = new Vector2(speed, rigid.velocity.y); //계속 왼쪽으로 이동 manager 안쓰는 버전 대신 위에 float 형으로 speed 정의해줘야함
     }
 
     IEnumerator SelfDestroy() //오브젝트가 계속 남아있는것을 방지하기 위한 코드
