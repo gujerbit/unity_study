@@ -8,6 +8,7 @@ public class create_enemy : MonoBehaviour
     public GameObject cactus_2; //선인장2
     public GameObject cactus_3; //선인장3
     public GameObject cactus_4; //선인장4
+<<<<<<< HEAD
     public GameObject cactus_5; //선인장5
     public GameObject cactus_6; //선인장6
     public GameObject fly_dino; //익룡
@@ -19,6 +20,15 @@ public class create_enemy : MonoBehaviour
     private bool canCreate = true; //생산 가능한가?
     private int enemyType = 0; //0 - 익룡, 1 - 선인장, 2 - 운석
     private int flySpawnPoint = 0; //스폰 위치
+=======
+    public GameObject fly_dino; //익룡
+
+    public float createSpeed = 4f; //생산 속도
+
+    private bool canCreate = true; //생산 가능한가?
+    private int enemyType = 0; //0 - 선인장1, 1 - 선인장2, 2 - 익룡
+    private int flySpawnPoint = 0; //0 - 스폰포인트1, 1 - 스폰포인트2
+>>>>>>> ff78e9ef4b678e470ddc99b38636207e0ac932d3
 
     private dino dino; //플레이어
 
@@ -50,6 +60,7 @@ public class create_enemy : MonoBehaviour
         if(createSpeed > 2) //생산 속도가 2보다 높다면
         {
             createSpeed -= 0.01f; //생산 속도 증가
+<<<<<<< HEAD
         }
 
         enemyType = Random.Range(0, 3); //적 타입 정하기 0~2
@@ -111,6 +122,46 @@ public class create_enemy : MonoBehaviour
             {
                 Instantiate(meteor_2); //운석 2 생성
                 meteor_2.transform.position = new Vector3(25, -1.82f, 1); //땅에서 스폰
+=======
+            Debug.Log(createSpeed);
+        }
+
+        enemyType = Random.Range(0, 6); //적 타입 정하기 0~5
+
+        if(enemyType == 2 || enemyType == 5) //익룡이라면
+        {
+            Instantiate(fly_dino); //익룡 생성
+            flySpawnPoint = Random.Range(0, 3); //땅에서 스폰인지 하늘에서 스폰인지 정하기 0~2
+
+            if (flySpawnPoint == 0)
+            {
+                fly_dino.transform.position = new Vector3(10, -1, 1); //하늘에서 생성
+            } else if(flySpawnPoint == 1)
+            {
+                fly_dino.transform.position = new Vector3(10, -2.4f, 1); //중간에 생성
+            } else if(flySpawnPoint == 2)
+            {
+                fly_dino.transform.position = new Vector3(10, -2.92f, 1); //땅에서 생성
+            }
+        } else //그외 (선인장)
+        {
+            if(enemyType == 0) //선인장1
+            {
+                Instantiate(cactus_1); //선인장1 생성
+                cactus_1.transform.position = new Vector3(10, -2.92f, 1); //땅에서 스폰
+            } else if(enemyType == 1) //선인장2
+            {
+                Instantiate(cactus_2); //선인장2 생성
+                cactus_2.transform.position = new Vector3(10, -2.92f, 1); //땅에서 스폰
+            } else if(enemyType == 3)
+            {
+                Instantiate(cactus_3); //선인장3 생성
+                cactus_3.transform.position = new Vector3(10, -3.12f, 1); //땅에서 스폰
+            } else if(enemyType == 4)
+            {
+                Instantiate(cactus_4); //선인장4 생성
+                cactus_4.transform.position = new Vector3(10, -3.12f, 1); //땅에서 스폰
+>>>>>>> ff78e9ef4b678e470ddc99b38636207e0ac932d3
             }
         }
 
